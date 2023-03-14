@@ -14,15 +14,11 @@ steps:
   - name: 编译
     image: ccr.ccs.tencentyun.com/pangum/drone
     volumes:
-      - name: gopath
-        path: /var/lib/gopath
-      - name: gocache
-        path: /var/lib/gocache
-      - name: linter
-        path: /var/lib/linter
+      - name: go
+        path: /var/lib/go
     settings:
       output:
-        name: plugin
+        name: secret
 
   - name: 发布
     image: ccr.ccs.tencentyun.com/dronestock/docker
@@ -36,7 +32,7 @@ steps:
       PASSWORD_CCR:
         from_secret: password_tencentyun_ccr
     settings:
-      repository: dronestock/todo
+      repository: dronestock/secret
       registries:
         - username: dronestock
           password: $${PASSWORD_DOCKER}
@@ -50,12 +46,6 @@ volumes:
   - name: docker
     host:
       path: /var/lib/cache/docker
-  - name: gopath
+  - name: go
     host:
-      path: /var/lib/cache/gopath
-  - name: gocache
-    host:
-      path: /var/lib/cache/gocache
-  - name: linter
-    host:
-      path: /var/lib/cache/linter
+      path: /var/lib/cache/go
